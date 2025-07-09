@@ -112,7 +112,7 @@
                     few steps.
                 </p>
 <button onclick="playAppointmentInstruction()" class="btn btn-primary">
-    Book Appointment
+    Details Appointment
 </button>
 
             </div>
@@ -246,8 +246,7 @@
 
     <script>
 function playAppointmentInstruction() {
-    const message = "To proceed with your appointment, please log in first and select your desired service.";
-
+   const message = "To proceed with your appointment, please log in first and select your desired service. After booking, you will receive an email confirmation once the admin approves your appointment request. Thank you for choosing our clinic.";
     const speech = new SpeechSynthesisUtterance(message);
     speech.lang = 'en-US';
     speech.rate = 1.2;
