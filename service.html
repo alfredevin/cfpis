@@ -259,37 +259,47 @@ function playAppointmentInstruction() {
 }
 </script>
 
-<script>
-    function bookAppointment(serviceName) {
-        // SweetAlert modal with date input
-        Swal.fire({
-            title: `Set Appointment for ${serviceName}`,
-            html: `
-                <input type="datetime-local" id="appointmentDate" class="form-control" placeholder="Select Date">
-            `,
-            confirmButtonText: 'Confirm',
-            focusConfirm: false,
-            preConfirm: () => {
-                const date = document.getElementById('appointmentDate').value;
-                if (!date) {
-                    Swal.showValidationMessage('Please select a date.');
+
+ <script>
+        function bookAppointment(serviceName) {
+            // Speech: intro instruction
+            const message = `To complete the appointment for ${serviceName}, please set your preferred date. Thank you.`;
+            const speech = new SpeechSynthesisUtterance(message);
+            speech.lang = 'en-US';
+            speech.rate = 1;
+            window.speechSynthesis.speak(speech);
+
+            // SweetAlert modal with date input
+            Swal.fire({
+                title: `Set Appointment for ${serviceName}`,
+                html: `
+            <input type="datetime-local" id="appointmentDate" class="form-control" placeholder="Select Date">
+        `,
+                confirmButtonText: 'Confirm',
+                focusConfirm: false,
+                preConfirm: () => {
+                    const date = document.getElementById('appointmentDate').value;
+                    if (!date) {
+                        Swal.showValidationMessage('Please select a date.');
+                    }
+                    return { date: date };
                 }
-                return { date: date };
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const thankYouMsg = `Your appointment for ${serviceName} is set on ${result.value.date}. Thank you! Please wait for the admin's approval. You will receive a confirmation via email.`;
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const thankYouMsg = `Your appointment for ${serviceName} is set on ${result.value.date}. Thank you! Please wait for the admin's approval. You will receive a confirmation via email.`;
+                    const thankYouSpeech = new SpeechSynthesisUtterance(thankYouMsg);
+                    thankYouSpeech.lang = 'en-US';
+                    window.speechSynthesis.speak(thankYouSpeech);
 
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Appointment Confirmed!',
-                    text: thankYouMsg
-                });
-            }
-        });
-    }
-</script>
-
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Appointment Confirmed!',
+                        text: thankYouMsg
+                    });
+                }
+            });
+        }
+    </script>
 
 </body>
 
