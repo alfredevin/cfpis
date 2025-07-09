@@ -286,6 +286,7 @@
                     const thankYouMsg = `Your appointment for ${serviceName} is set on ${result.value.date}. Thank you! Please wait for the admin's approval. You will receive a confirmation via email.`;
                     const thankYouSpeech = new SpeechSynthesisUtterance(thankYouMsg);
                     thankYouSpeech.lang = 'en-US';
+            thankYouSpeech.rate = 1.2;
                     window.speechSynthesis.speak(thankYouSpeech);
 
                     Swal.fire({
