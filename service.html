@@ -242,62 +242,51 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        window.addEventListener('load', function () {
-            const message = "If you would like to make an appointment, kindly select and click your desired service. Please make sure you are logged in first.";
+    // Optional: You can remove this whole block if you don’t want anything to happen on page load
+    window.addEventListener('load', function () {
+        // You can show a SweetAlert here instead of voice, if needed
+        // Example:
+        /*
+        Swal.fire({
+            icon: 'info',
+            title: 'Need an Appointment?',
+            text: 'Select and click your desired service. Please make sure you are logged in first.'
+        });
+        */
+    });
+</script>
 
-            const speech = new SpeechSynthesisUtterance(message);
-            speech.lang = 'en-US'; // you can change to 'en-PH' for Filipino English tone
-            speech.rate = 1.2; // speaking speed (1 is normal)
-            speech.pitch = 1; // tone pitch
-            speech.volume = 1; // volume (0 to 1)
+<script>
+    function bookAppointment(serviceName) {
+        // SweetAlert modal with date input
+        Swal.fire({
+            title: `Set Appointment for ${serviceName}`,
+            html: `
+                <input type="datetime-local" id="appointmentDate" class="form-control" placeholder="Select Date">
+            `,
+            confirmButtonText: 'Confirm',
+            focusConfirm: false,
+            preConfirm: () => {
+                const date = document.getElementById('appointmentDate').value;
+                if (!date) {
+                    Swal.showValidationMessage('Please select a date.');
+                }
+                return { date: date };
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const thankYouMsg = `Your appointment for ${serviceName} is set on ${result.value.date}. Thank you! Please wait for the admin's approval. You will receive a confirmation via email.`;
 
-            // Optional: Only speak if not already speaking
-            if (!window.speechSynthesis.speaking) {
-                window.speechSynthesis.speak(speech);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Appointment Confirmed!',
+                    text: thankYouMsg
+                });
             }
         });
-    </script>
-    <script>
-        function bookAppointment(serviceName) {
-            // Speech: intro instruction
-            const message = `To complete the appointment for ${serviceName}, please set your preferred date. Thank you.`;
-            const speech = new SpeechSynthesisUtterance(message);
-            speech.lang = 'en-US';
-            speech.rate = 1.2;
-            window.speechSynthesis.speak(speech);
+    }
+</script>
 
-            // SweetAlert modal with date input
-            Swal.fire({
-                title: `Set Appointment for ${serviceName}`,
-                html: `
-            <input type="datetime-local" id="appointmentDate" class="form-control" placeholder="Select Date">
-        `,
-                confirmButtonText: 'Confirm',
-                focusConfirm: false,
-                preConfirm: () => {
-                    const date = document.getElementById('appointmentDate').value;
-                    if (!date) {
-                        Swal.showValidationMessage('Please select a date.');
-                    }
-                    return { date: date };
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const thankYouMsg = `Your appointment for ${serviceName} is set on ${result.value.date}. Thank you! Please wait for the admin's approval. You will receive a confirmation via email.`;
-                    const thankYouSpeech = new SpeechSynthesisUtterance(thankYouMsg);
-                    thankYouSpeech.lang = 'en-US';
-            thankYouSpeech.rate = 1.2;
-                    window.speechSynthesis.speak(thankYouSpeech);
-
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Appointment Confirmed!',
-                        text: thankYouMsg
-                    });
-                }
-            });
-        }
-    </script>
 
 </body>
 
