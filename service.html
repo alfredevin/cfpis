@@ -247,7 +247,7 @@
 
             const speech = new SpeechSynthesisUtterance(message);
             speech.lang = 'en-US'; // you can change to 'en-PH' for Filipino English tone
-            speech.rate = 1.5; // speaking speed (1 is normal)
+            speech.rate = 1.2; // speaking speed (1 is normal)
             speech.pitch = 1; // tone pitch
             speech.volume = 1; // volume (0 to 1)
 
@@ -263,7 +263,7 @@
             const message = `To complete the appointment for ${serviceName}, please set your preferred date. Thank you.`;
             const speech = new SpeechSynthesisUtterance(message);
             speech.lang = 'en-US';
-            speech.rate = 1;
+            speech.rate = 1.2;
             window.speechSynthesis.speak(speech);
 
             // SweetAlert modal with date input
